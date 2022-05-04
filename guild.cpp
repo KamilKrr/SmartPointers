@@ -20,7 +20,11 @@ bool Guild::remove_member(string n) {
 	return true;
 }
 void Guild::grant_license(string n) {
-
+	if(!m.count(n)) throw runtime_error("person not in guild");
+	if(members[n].pay_fee(fee)){
+		members[n].receive_license(unique_ptr<License>);
+	}
+	throw runtime_error("person cannot pay fee");
 }
 bool Guild::offer_job(shared_ptr<Person> p) const {
 

@@ -1,31 +1,34 @@
+#include<string>
+#include<memory>
+#include<vector>
+#include<iostream>
+#include<map>
 #include "person.h"
-#include <ostream>
-#include <string>
+#include "license.h"
 
 using namespace std;
 
 
-Person::Person(string name, unsigned int wealth=0) : name{name}, wealth{wealth} {
+Person::Person(string name, unsigned int wealth) : name{name}, wealth{wealth} {
 	if(name.empty()) throw runtime_error("name cannot be emopty");
 }
 
 void Person::work(string guild) {
 	if(licenses.count(guild)){
-		unique_ptr<License> license = licenses[guild];
 
-		if(license->is_valid()){
-			license->use();
-			if(!pay_fee(license->get_salary())) throw runtime_error ("cannot pay fee");
+		if(licenses[guild]->valid()){
+			licenses[guild]->use();
+			if(!pay_fee(licenses[guild]->get_salary())) throw runtime_error ("cannot pay fee");
 		}
 	}
 	throw runtime_error("no licenses for guild");
 }
 
-void Person::increase_weath(unsigned int i) {
+void Person::increase_wealth(unsigned int i) {
 	wealth += i;
 }
 
-string Person::get_name() {
+string Person::get_name() const {
 	return name;
 }
 
@@ -37,18 +40,37 @@ bool Person::pay_fee(unsigned int i) {
 }
 
 void Person::receive_license(unique_ptr<License> l) {
-	licenses[l->get_guildname()] = l;
+	licenses[l->get_guildname()] = move(l);
 }
 
 void Person::transfer_license(string l, shared_ptr<Person> p) {
 	if(!licenses.count(l)) throw runtime_error("cannot transfer license");
 
-	p->receive_license(licenses[l]);
-	licenses.erase(l);
+	p->receive_license(move(licenses[l]));
 }
 
 bool Person::eligible(string l) const {
-	return licenses.count(l) && licenses[l]->is_valid();
+	return licenses.count(l) && licenses.at(l)->valid();
+}
+
+ostream& Person::print(ostream& o) const {
+	o << name << ", " << wealth << " Coins, {";
+  for(const auto& license : licenses)
+		o << *(license.second);
+  o << "}";
+return o;
+}
+
+Worker::Worker(string name, unsigned int wealth) : Person(name, wealth) {};
+
+void Worker::work(unsigned int i) {
+	increase_wealth(i);
+}
+
+Superworker::Superworker(unsigned int fee, string name, unsigned int wealth) : Person(name, wealth), fee{fee} {};
+
+void Superworker::work(unsigned int i) {
+  increase_wealth(i + fee);
 }
 
 

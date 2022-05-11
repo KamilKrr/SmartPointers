@@ -1,10 +1,12 @@
 #ifndef LICENSE_H
 #define LICENSE_H
-
 #include<string>
-#include<ostream>
-using namespace std;
+#include<memory>
+#include<vector>
+#include<iostream>
+#include<map>
 
+using namespace std;
 
 class License {
 	string name;
@@ -26,3 +28,4 @@ inline ostream& operator<< (ostream& o, const License& l) {
 };
 
 #endif
+

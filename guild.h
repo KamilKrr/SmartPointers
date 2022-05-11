@@ -1,10 +1,15 @@
 #ifndef GUILD_H
 #define GUILD_H
-
 #include<string>
-#include<ostream>
+#include<memory>
+#include<vector>
+#include<iostream>
 #include<map>
+
 using namespace std;
+
+class Person;
+class License;
 
 
 class Guild {
@@ -15,7 +20,7 @@ class Guild {
 
 public:
 	Guild(string name, unsigned int fee, unsigned int sal, const vector<shared_ptr<Person>>& members = {});
-	bool add_member(shared_ptr<person> p);
+	bool add_member(shared_ptr<Person> p);
 	bool remove_member(string n);
 	void grant_license(string n);
 	bool offer_job(shared_ptr<Person> p) const;
@@ -27,4 +32,6 @@ inline ostream& operator<< (ostream& o, const Guild& g) {
 	return g.print(o);
 };
 
+
 #endif
+

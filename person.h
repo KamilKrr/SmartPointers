@@ -1,11 +1,14 @@
 #ifndef PERSON_H
 #define PERSON_H
-
 #include<string>
-#include<ostream>
+#include<memory>
+#include<vector>
+#include<iostream>
 #include<map>
+
 using namespace std;
 
+class License;
 
 class Person {
 	string name;
@@ -16,7 +19,8 @@ public:
 	Person(string name, unsigned int wealth=0);
 	virtual ~Person() = default;
 	void work(string guild);
-	void increase_weath(unsigned int i);
+  virtual void work(unsigned int) = 0;
+	void increase_wealth(unsigned int i);
 	string get_name() const;
 	bool pay_fee(unsigned int i);
 	void receive_license(unique_ptr<License> l);
@@ -26,8 +30,23 @@ public:
 
 };
 
-inline ostream& operator<< (ostream& o, const Guild& g) {
-	return g.print(o);
+inline ostream& operator<< (ostream& o, const Person& p) {
+	return p.print(o);
 };
 
+class Worker : public Person {
+public:
+  Worker(string name, unsigned int wealth = 0);
+  void work(unsigned int i);
+};
+
+class Superworker : public Person {
+  unsigned int fee;
+public:
+  Superworker(unsigned int fee,string,unsigned int=0);
+  void work(unsigned int i);
+};
+
+
 #endif
+

@@ -1,6 +1,9 @@
+#include<string>
+#include<memory>
+#include<vector>
+#include<iostream>
+#include<map>
 #include "license.h"
-#include <ostream>
-#include <string>
 
 using namespace std;
 
@@ -33,5 +36,4 @@ ostream& License::print(ostream& o) const {
 	o << "[License for " << name << ", Salary: " << salary << ", Used: " << counter << "]";
 return o;
 }
-
 

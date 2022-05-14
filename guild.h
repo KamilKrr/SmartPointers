@@ -34,4 +34,3 @@ inline ostream& operator<< (ostream& o, const Guild& g) {
 
 
 #endif
-

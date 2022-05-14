@@ -15,13 +15,13 @@ Person::Person(string name, unsigned int wealth) : name{name}, wealth{wealth} {
 
 void Person::work(string guild) {
 	if(licenses.count(guild)){
-
-		if(licenses[guild]->valid()){
-			licenses[guild]->use();
-			if(!pay_fee(licenses[guild]->get_salary())) throw runtime_error ("cannot pay fee");
+		if(licenses.at(guild)->valid()){
+      work(licenses.at(guild)->get_salary());
+      licenses.at(guild)->use();
+      return;
 		}
 	}
-	throw runtime_error("no licenses for guild");
+  throw runtime_error("no licenses for guild");
 }
 
 void Person::increase_wealth(unsigned int i) {
@@ -46,7 +46,8 @@ void Person::receive_license(unique_ptr<License> l) {
 void Person::transfer_license(string l, shared_ptr<Person> p) {
 	if(!licenses.count(l)) throw runtime_error("cannot transfer license");
 
-	p->receive_license(move(licenses[l]));
+	p->receive_license(move(licenses.at(l)));
+  licenses.erase(l);
 }
 
 bool Person::eligible(string l) const {
@@ -67,11 +68,24 @@ void Worker::work(unsigned int i) {
 	increase_wealth(i);
 }
 
+ostream& Worker::print(ostream& o) const {
+	o << "[Worker ";
+  Person::print(o);
+  o << "]";
+	return o;
+}
+
 Superworker::Superworker(unsigned int fee, string name, unsigned int wealth) : Person(name, wealth), fee{fee} {};
 
 void Superworker::work(unsigned int i) {
   increase_wealth(i + fee);
 }
 
+ostream& Superworker::print(ostream& o) const {
+	o << "[Superworker ";
+  Person::print(o);
+  o << "]";
+	return o;
+}
 
 

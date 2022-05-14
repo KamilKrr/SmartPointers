@@ -11,7 +11,7 @@ using namespace std;
 class License {
 	string name;
 	unsigned int salary;
-	unsigned int counter;
+	unsigned int counter = 0;
 
 public:
 	License(string name, unsigned int salary);
@@ -28,4 +28,3 @@ inline ostream& operator<< (ostream& o, const License& l) {
 };
 
 #endif
-

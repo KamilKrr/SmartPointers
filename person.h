@@ -34,19 +34,20 @@ inline ostream& operator<< (ostream& o, const Person& p) {
 	return p.print(o);
 };
 
-class Worker : public Person {
+class Worker : virtual public Person {
 public:
   Worker(string name, unsigned int wealth = 0);
   void work(unsigned int i);
+  ostream& print(ostream& o) const;
 };
 
-class Superworker : public Person {
+class Superworker : virtual public Person {
   unsigned int fee;
 public:
   Superworker(unsigned int fee,string,unsigned int=0);
   void work(unsigned int i);
+  ostream& print(ostream& o) const;
 };
 
 
 #endif
-

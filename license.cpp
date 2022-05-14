@@ -9,8 +9,8 @@ using namespace std;
 
 
 License::License (string name, unsigned int salary) : name{name}, salary{salary} {
-	if(name.empty()) throw new runtime_error("name cannot be empty");
-	if(salary == 0) throw new runtime_error("salary must be > 0");
+	if(name.empty()) throw runtime_error("name cannot be empty");
+	if(salary == 0) throw runtime_error("salary must be > 0");
 };
 
 string License::get_guildname() const {
@@ -36,4 +36,3 @@ ostream& License::print(ostream& o) const {
 	o << "[License for " << name << ", Salary: " << salary << ", Used: " << counter << "]";
 return o;
 }
-
